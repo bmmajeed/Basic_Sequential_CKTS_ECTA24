@@ -1,0 +1,45 @@
+; BNF grammar evolving the full structure of the HDL code as well in addition with current state, inputs, output, and the next state for an FSM of JK-Flip Flop.
+
+<final>         ::= <parameters>"\n"<sequential>
+<parameters>    ::= "parameter S0 = 1'b0; \n
+                     parameter S1 = 1'b1; \n "
+<sequential>    ::= "always @(posedge clk) begin \n\t 
+                        if(!rst) begin "
+                            <set_state> <states_block>" \n\t 
+                        end \n"<last_else>"\n
+                     end\n"
+<set_state>     ::= "\n\t\t if (state_in || !state_in) \n\t\t\t 
+                                state = state_in; \n\t\t 
+                            else \n\t\t\t 
+                                state = state; \n"
+<states_block>  ::= <if> <else> | <if> <else_ifs> <else>
+<else_ifs>      ::=  <else_if> | <else_if> <else_ifs> 
+<if>            ::= "\n\t\t if ("<lhs1>" == "<rhs>") begin \n\t\t\t " 
+                                <op_options> "\n\t\t 
+                            end" 
+                    | "\n\t\t if ("<lhs1>" == "<rhs>") begin \n\t\t\t " 
+                                <op_options> \n\t\t\t 
+                                <states_block> "\n\t\t 
+                            end"
+<else_if>       ::= "\n\t\t else if ("<lhs1>" == "<rhs>") begin 
+                                            \n\t\t\t " 
+                                <op_options> "\n\t\t 
+                            end" 
+                    | "\n\t\t else if ("<lhs1>" == "<rhs>") begin 
+                                            \n\t\t\t " 
+                                <op_options> \n\t\t\t 
+                                <states_block>  "\n\t\t 
+                            end"
+<else>          ::= "\n\t\t else begin\n\t\t\t " 
+                                <op_options> "\n\t\t 
+                            end"
+<last_else>     ::= "\t else begin\n\t\t
+                            q <= 0;\n\t\t
+                            state <= S0;\n\t 
+                        end" 
+<op_options>    ::= <lhs2>" <= "<rhs>";" |
+                    <lhs2>" <= "<rhs>";" \n\t\t\t 
+                    <lhs2>" <= "<rhs>";"
+<lhs1>          ::= "j" | "k" | "q" | "state"
+<lhs2>          ::= "q" | "state"
+<rhs>           ::= "0" | "1" | "S0" | "S1" | "j" | "k" | "q" 

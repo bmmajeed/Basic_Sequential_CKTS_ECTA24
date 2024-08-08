@@ -1,0 +1,40 @@
+; BNF grammar having the full structure of the HDL code already for an FSM to evolve the current state, inputs, output, and the next state of JK-Flip Flop.
+
+
+<final>         ::= <parameters>"\n"<sequential>
+<parameters>    ::= "parameter S0 = 1'b0; \n
+                     parameter S1 = 1'b1; \n "
+<sequential>    ::= "always @(posedge clk) begin \n\t                        
+                        if(!rst) begin 
+                            "<set_state> <states_block>" \n\t 
+                        end \n
+                        "<last_else>" \n
+                     end \n"
+<set_state>     ::= "\n\t\t if (state_in || !state_in) \n\t\t\t 
+                                state = state_in; \n\t\t 
+                            else \n\t\t\t 
+                                state = state; \n"
+<states_block>  ::= "\n\t\t if (state == "<states>") begin \n\t\t\t 
+                                q = "<values>";"
+                                <conditional>"\n\t\t 
+                            end \n\t\t 
+                            else if (state == "<states>") begin \n\t\t\t 
+                                q = "<values>";" 
+                                <conditional> \n\t\t"
+                            end"\n\t\t 
+                            <else>
+<conditional>   ::= "\n\t\t\t if ("<vars>" == "<values>") \n\t\t\t\t 
+                                state = "<states>";\n\t\t\t 
+                            else \n\t\t\t\t 
+                                state = "<states>";\n"
+<else>          ::= "else begin\n\t\t\t 
+                        q = q;\n\t\t\t 
+                        state = state;\n\t\t 
+                    end"
+<last_else>     ::= "\t else begin\n\t\t
+                        q = 0;\n\t\t
+                        state = S0;\n\t 
+                    end"
+<vars>          ::= "j" | "k"
+<states>        ::= "S0" | "S1"
+<values>        ::= "0" | "1" 
