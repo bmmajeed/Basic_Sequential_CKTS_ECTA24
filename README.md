@@ -1,1 +1,3 @@
 # Basic_Sequential_CKTS_ECTA24
+
+Synthesis reports shown in SM in the form of tables display the area (cell count) and Power Delay Product (PDP) for both the Gold and evolved versions of JK-FF, UDC, and 8FE circuits, respectively. The unit for PDP is milliwatt picoseconds (mWps). Each table compares the synthesised Gold circuit with the evolved solutions across relevant technologies. The reports include area and PDP  for Gold circuits, alongside statistics (best, worst, mean, median, and Standard Deviation (STD)) for evolved circuits using both G1 and G2 Type Grammar. Evolved circuit values are colour-coded: green colour indicates superior performance to Gold circuits, blue colour indicates equivalent performance, and red colour indicates inferior performance.
